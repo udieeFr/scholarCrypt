@@ -2,6 +2,8 @@
 
 from website import db
 from datetime import datetime
+# FIX: Added Flask-Login UserMixin for proper session management
+from flask_login import UserMixin
 
 class Admin(db.Model):
     __tablename__ = 'admins'
@@ -10,7 +12,8 @@ class Admin(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
 
-class Applicant(db.Model):
+# FIX: Added UserMixin to Applicant model for Flask-Login compatibility
+class Applicant(UserMixin, db.Model):
     __tablename__ = 'applicants'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +34,7 @@ class ApplicantCriteria(db.Model):
     
     applicant_id = db.Column(db.Integer, db.ForeignKey('applicants.id'), primary_key=True)
     academic_score = db.Column(db.Numeric(5, 2), nullable=False)
-    merit_points = db.Column(db.Integer, nullable=False)
+    merit_points = db.Column(db.Numeric(5, 2), nullable=False)
     household_income = db.Column(db.Numeric(10, 2), nullable=False)
     num_siblings = db.Column(db.Integer, nullable=False)
     applied_program = db.Column(db.String(100), nullable=False)
@@ -47,7 +50,7 @@ class ShortlistedApplicant(db.Model):
     email = db.Column(db.String(100), nullable=False)
     address = db.Column(db.Text, nullable=False)
     academic_score = db.Column(db.Numeric(5, 2), nullable=False)
-    merit_points = db.Column(db.Integer, nullable=False)
+    merit_points = db.Column(db.Numeric(5,2), nullable=False)
     household_income = db.Column(db.Numeric(10, 2), nullable=False)
     num_siblings = db.Column(db.Integer, nullable=False)
     applied_program = db.Column(db.String(100), nullable=False)

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Scholarship - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+        }
+
+        .coming-soon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('applicant.dashboard') }}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>Apply for Scholarship</h1>
+        </div>
+
+        <div class="content-card">
+            <div class="coming-soon">🚧</div>
+            <h2>Application Form Coming Soon</h2>
+            <p>The scholarship application form is currently under development. 
+               This page will contain the form where students can submit their academic scores, 
+               merit points, household income, and other required information.</p>
+            <p>Please check back later or contact the administrator for more information.</p>
+        </div>
+    </div>
+</body>
+</html>

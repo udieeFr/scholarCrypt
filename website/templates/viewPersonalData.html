@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .data-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .security-notice {
+            background: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-field {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-value {
+            font-size: 1.1rem;
+            color: #555;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        .encryption-status {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .back-btn {
+                position: static;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('applicant.dashboard') }}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Your Personal Information</h1>
+            <p class="description">
+                This is your decrypted personal information as stored in our secure system.
+            </p>
+        </div>
+
+        <div class="data-container">
+            <div class="security-notice">
+                🛡️ This information is encrypted in our database and only you can view it here. Administrators cannot access this data until you are shortlisted.
+            </div>
+
+            <div class="data-field">
+                <div class="field-label">NRIC / Passport Number</div>
+                <div class="field-value">{{ nric if nric else 'Not provided' }}</div>
+            </div>
+
+            <div class="data-field">
+                <div class="field-label">Email Address</div>
+                <div class="field-value">{{ email if email else 'Not provided' }}</div>
+            </div>
+
+            <div class="data-field">
+                <div class="field-label">Full Address</div>
+                <div class="field-value">{{ address if address else 'Not provided' }}</div>
+            </div>
+
+            <div class="encryption-status">
+                <strong>🔒 Encryption Status:</strong> Your personal information is securely encrypted using AES-256 encryption with PBKDF2 key derivation and HMAC integrity verification.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

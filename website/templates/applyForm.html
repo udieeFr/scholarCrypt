@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Scholarship - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-section {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            background: #fafafa;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .security-note {
+            background: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input:invalid {
+            border-color: #dc3545;
+        }
+
+        input:valid {
+            border-color: #28a745;
+        }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 2rem;
+        }
+
+        .flash-messages div {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .flash-success {    
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-btn {
+                position: static;
+                margin-bottom: 1rem;
+                display: inline-block;
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .form-description {
+            color: #666;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('applicant.dashboard') }}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>📚 Scholarship Application</h1>
+            <p class="form-description">
+                Please provide all required information. Your personal details will be encrypted and kept secure until you are shortlisted.
+            </p>
+        </div>
+
+        <div class="form-container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- The Application Form -->
+            <form method="POST" id="applicationForm">
+                <div class="form-grid">
+                    
+                    <!-- SECTION 1: Personal Information (Encrypted) -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <span class="section-icon">🔐</span>
+                            Personal Information (Encrypted)
+                        </div>
+                        
+                        <div class="security-note">
+                            🛡️ Your personal information will be encrypted and securely stored. Only authorized personnel can access this data after you are shortlisted.
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nric">
+                                    NRIC/Passport Number <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="nric" 
+                                    name="nric" 
+                                    required
+                                    pattern="[0-9]{6}-[0-9]{2}-[0-9]{4}|[A-Z0-9]{5,15}"
+                                    placeholder="e.g., 123456-78-9012 or A1234567"
+                                    maxlength="20"
+                                >
+                                <div class="help-text">Malaysian NRIC or Passport Number</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">
+                                    Email Address <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    required
+                                    placeholder="your.email@example.com"
+                                    maxlength="100"
+                                >
+                                <div class="help-text">Your primary contact email</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">
+                                Full Address <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                id="address" 
+                                name="address" 
+                                required
+                                rows="3"
+                                placeholder="e.g., 123 University Street, Taman ABC, 50450 Kuala Lumpur, Malaysia"
+                                maxlength="300"
+                            ></textarea>
+                            <div class="help-text">Complete residential address including postcode</div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: Academic Information -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <span class="section-icon">🎓</span>
+                            Academic Information
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="academic_score">
+                                    Academic Score <span class="required">*</span>
+                                </label>
+                                <!-- FIX: Changed min from "0" to "1.0" and updated help text -->
+                                <input 
+                                    type="number" 
+                                    id="academic_score" 
+                                    name="academic_score" 
+                                    min="1.0" 
+                                    max="4.0" 
+                                    step="0.01" 
+                                    required
+                                    placeholder="e.g., 3.50"
+                                >
+                                <!-- FIX: Updated help text to show correct range -->
+                                <div class="help-text">Your overall academic score (1.0-4.0)</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="merit_points">
+                                    Merit Points <span class="required">*</span>
+                                </label>
+                                <!-- FIX: Added min="1.0" max="10.0" and step="0.1" -->
+                                <input 
+                                    type="number" 
+                                    id="merit_points" 
+                                    name="merit_points" 
+                                    min="1.0" 
+                                    max="10.0" 
+                                    step="0.1" 
+                                    required
+                                    placeholder="e.g., 8.5"
+                                >
+                                <!-- FIX: Updated help text to show correct range -->
+                                <div class="help-text">Points from extracurricular activities (1.0-10.0)</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="applied_program">
+                                Applied Program <span class="required">*</span>
+                            </label>
+                            <select id="applied_program" name="applied_program" required>
+                                <option value="">Select your program</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Software Engineering">Software Engineering</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Cybersecurity">Cybersecurity</option>
+                                <option value="Business Administration">Business Administration</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Medicine">Medicine</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="help-text">Choose the program you are applying for</div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: Family & Financial Information -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <span class="section-icon">👨‍👩‍👧‍👦</span>
+                            Family & Financial Information
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="household_income">
+                                    Household Income (RM) <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="household_income" 
+                                    name="household_income" 
+                                    min="0" 
+                                    step="0.01" 
+                                    required
+                                    placeholder="e.g., 5000.00"
+                                >
+                                <div class="help-text">Monthly household income in Ringgit Malaysia</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="num_siblings">
+                                    Number of Siblings <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="num_siblings" 
+                                    name="num_siblings" 
+                                    min="0" 
+                                    required
+                                    placeholder="e.g., 2"
+                                >
+                                <div class="help-text">Total number of brothers and sisters</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Disability Status <span class="required">*</span>
+                            </label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input 
+                                        type="radio" 
+                                        id="disability_no" 
+                                        name="disability_status" 
+                                        value="no" 
+                                        required
+                                    >
+                                    <label for="disability_no">No</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input 
+                                        type="radio" 
+                                        id="disability_yes" 
+                                        name="disability_status" 
+                                        value="yes" 
+                                        required
+                                    >
+                                    <label for="disability_yes">Yes</label>
+                                </div>
+                            </div>
+                            <div class="help-text">Do you have any physical or learning disabilities?</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        🔐 Submit Encrypted Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-messages div');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.transition = 'opacity 0.5s ease';
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500);
+                }, 5000);
+            });
+
+            // Form validation and submit handling
+            const form = document.getElementById('applicationForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', function(e) {
+                // Disable button to prevent double submission
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '🔐 Encrypting & Submitting...';
+                
+                // Re-enable button after 5 seconds in case of issues
+                setTimeout(function() {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '🔐 Submit Encrypted Application';
+                }, 5000);
+            });
+
+            // Real-time validation feedback
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        this.style.borderColor = '#dc3545';
+                    } else {
+                        this.style.borderColor = '#28a745';
+                    }
+                });
+            });
+
+            // NRIC format validation
+            const nricInput = document.getElementById('nric');
+            nricInput.addEventListener('input', function() {
+                const value = this.value;
+                const malaysianNRIC = /^[0-9]{6}-[0-9]{2}-[0-9]{4}$/;
+                const passport = /^[A-Z0-9]{5,15}$/;
+                
+                if (malaysianNRIC.test(value) || passport.test(value.upper())) {
+                    this.style.borderColor = '#28a745';
+                } else if (value.length > 0) {
+                    this.style.borderColor = '#ffc107';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

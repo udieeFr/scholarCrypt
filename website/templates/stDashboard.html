@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .user-info {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* SOLUTION: Make the anchor tag look like a card */
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .card-link:hover .dashboard-card::before {
+            left: 100%;
+        }
+
+        .card-link:hover .dashboard-card {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(31, 38, 135, 0.5);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .apply-card {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .apply-card .card-icon {
+            color: #fff;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .status-card .card-icon {
+            color: #fff;
+        }
+
+        /* FIX: Added styles for the new personal data card */
+        .personal-data-card {
+            background: linear-gradient(135deg, #9C27B0, #673AB7);
+            color: white;
+        }
+
+        .personal-data-card .card-icon {
+            color: #fff;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-applied {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .badge-shortlisted {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-not-applied {
+            background: #6c757d;
+            color: white;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: auto;
+            max-width: 500px;
+        }
+
+        .flash-messages div {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flash-success {    
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .flash-error {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .logout-btn {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Logout Button -->
+    <a href="{{ url_for('applicant.logout') }}" class="logout-btn">Logout</a>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Hello, {{ username }}!</h1>
+            <div class="user-info">User ID: {{ user_id }}</div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <!-- Apply for Scholarships Card -->
+            <!-- SOLUTION: Wrap entire card in an anchor tag -->
+            <a href="{{ url_for('applicant.apply') }}" class="card-link">
+                <div class="dashboard-card apply-card">
+                    {% if has_applied %}
+                        <div class="status-badge badge-applied">Applied</div>
+                    {% else %}
+                        <div class="status-badge badge-not-applied">Not Applied</div>
+                    {% endif %}
+                    
+                    <span class="card-icon">📚</span>
+                    <div class="card-title">Apply for Scholarships</div>
+                    <div class="card-description">
+                        {% if has_applied %}
+                            You have already submitted your scholarship application.
+                        {% else %}
+                            Submit your scholarship application and provide all required information.
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+
+            <!-- Application Status Card -->
+            <!-- SOLUTION: Wrap entire card in an anchor tag -->
+            <a href="{{ url_for('applicant.status') }}" class="card-link">
+                <div class="dashboard-card status-card">
+                    {% if is_shortlisted %}
+                        <div class="status-badge badge-shortlisted">Shortlisted</div>
+                    {% elif has_applied %}
+                        <div class="status-badge badge-applied">Under Review</div>
+                    {% else %}
+                        <div class="status-badge badge-not-applied">No Application</div>
+                    {% endif %}
+                    
+                    <span class="card-icon">📊</span>
+                    <div class="card-title">Application Status</div>
+                    <div class="card-description">
+                        {% if is_shortlisted %}
+                            Congratulations! You have been shortlisted.
+                        {% elif has_applied %}
+                            Track your application progress and review status.
+                        {% else %}
+                            Apply first to view your application status.
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+
+            <!-- FIX: Added new Personal Data Card -->
+            <a href="{{ url_for('applicant.view_personal_data') }}" class="card-link">
+                <div class="dashboard-card personal-data-card">
+                    <span class="card-icon">🔐</span>
+                    <div class="card-title">View Personal Data</div>
+                    <div class="card-description">
+                        {% if has_applied %}
+                            View your encrypted personal information that was submitted with your application.
+                        {% else %}
+                            Submit your application first to view your encrypted personal data.
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-messages div');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.transition = 'opacity 0.5s ease';
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

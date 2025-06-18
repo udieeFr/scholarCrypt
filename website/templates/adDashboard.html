@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .admin-info {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .admin-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            text-align: center;
+        }
+
+        .coming-soon {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: auto;
+            max-width: 500px;
+        }
+
+        .flash-messages div {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: 500;
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .flash-success {    
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .flash-error {
+            background: linear-gradient(135deg, #dc3545, #fd7e14);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .logout-btn {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Logout Button -->
+    <a href="{{ url_for('admin.logout') }}" class="logout-btn">Logout</a>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div class="admin-info">Welcome, {{ username }} (ID: {{ user_id }})</div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_applicants }}</div>
+                <div class="stat-label">Total Registered Users</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">{{ total_applications }}</div>
+                <div class="stat-label">Applications Submitted</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">{{ total_shortlisted }}</div>
+                <div class="stat-label">Shortlisted Applicants</div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel">
+            <div class="coming-soon">🔧</div>
+            <h2>Admin Management Panel</h2>
+            <p>Advanced administrative features are currently under development. 
+               This will include user management, application review, shortlisting tools, 
+               and comprehensive reporting capabilities.</p>
+            <p>Coming soon: Application review system, bulk operations, and detailed analytics.</p>
+        </div>
+    </div>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-messages div');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.transition = 'opacity 0.5s ease';
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

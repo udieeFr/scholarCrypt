@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status - ScholarCrypt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            margin-bottom: 2rem;
+        }
+
+        .status-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .status-description {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .application-details {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .detail-value {
+            color: #666;
+        }
+
+        .no-application {
+            color: #dc3545;
+        }
+
+        .shortlisted {
+            color: #28a745;
+        }
+
+        .under-review {
+            color: #ffc107;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('applicant.dashboard') }}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>Application Status</h1>
+        </div>
+
+        <div class="status-card">
+            {% if not application %}
+                <div class="status-icon no-application">❌</div>
+                <div class="status-title no-application">No Application Found</div>
+                <div class="status-description">
+                    You haven't submitted a scholarship application yet. 
+                    Please go to the "Apply for Scholarships" section to submit your application.
+                </div>
+            {% elif shortlisted %}
+                <div class="status-icon shortlisted">🎉</div>
+                <div class="status-title shortlisted">Congratulations! You've been Shortlisted</div>
+                <div class="status-description">
+                    Your application has been reviewed and you have been selected for the scholarship program.
+                    Further details will be communicated to you soon.
+                </div>
+                
+                <div class="application-details">
+                    <h3>Shortlisted Application Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Program:</span>
+                        <span class="detail-value">{{ shortlisted.applied_program }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Academic Score:</span>
+                        <span class="detail-value">{{ shortlisted.academic_score }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Merit Points:</span>
+                        <span class="detail-value">{{ shortlisted.merit_points }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Shortlisted Date:</span>
+                        <span class="detail-value">{{ shortlisted.shortlisted_at.strftime('%B %d, %Y') }}</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="status-icon under-review">⏳</div>
+                <div class="status-title under-review">Application Under Review</div>
+                <div class="status-description">
+                    Your scholarship application has been submitted successfully and is currently being reviewed. 
+                    We will notify you once the review process is complete.
+                </div>
+                
+                <div class="application-details">
+                    <h3>Submitted Application Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Program:</span>
+                        <span class="detail-value">{{ application.applied_program }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Academic Score:</span>
+                        <span class="detail-value">{{ application.academic_score }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Merit Points:</span>
+                        <span class="detail-value">{{ application.merit_points }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Household Income:</span>
+                        <span class="detail-value">${{ application.household_income }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Number of Siblings:</span>
+                        <span class="detail-value">{{ application.num_siblings }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Disability Status:</span>
+                        <span class="detail-value">{{ "Yes" if application.disability_status else "No" }}</span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

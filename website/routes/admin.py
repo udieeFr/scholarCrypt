@@ -34,7 +34,8 @@ def dashboard():
     total_applications = ApplicantCriteria.query.count()
     total_shortlisted = ShortlistedApplicant.query.count()
     
-    return render_template('admin_dashboard.html', 
+    # FIX: Changed template name from 'admin_dashboard.html' to 'adDashboard.html' to match your file name
+    return render_template('adDashboard.html', 
                          username=username,
                          user_id=user_id,
                          total_applicants=total_applicants,
