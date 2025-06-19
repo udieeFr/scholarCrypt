@@ -1,11 +1,13 @@
+import sys
+from pathlib import Path
 import getpass
 from werkzeug.security import generate_password_hash
 from website import create_app, db
 from website.models import Admin
 from website.config import Config
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
+# Ensure Python can find the 'website' module by adding the root folder to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 def create_admin_account():
     # Initialize Flask app context

@@ -12,4 +12,4 @@ class Config:
     ENCRYPTION_SALT = 'diaAtauAkuGaramAtauMadu'
 
     # Main administrator password for CLI admin creation
-    MAIN_ADMIN_PASSWORD = 'SuperSecretAdminPassword123!'
+    MAIN_ADMIN_PASSWORD = 'ilovecrypto'
