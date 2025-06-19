@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ScholarCrypt - Login</title>
+  <title>Scholarships Application System - Login</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('img/background.jpg');
+      background: url('static/img/tanjung.jpg');
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -17,13 +17,17 @@
     }
 
     .login-container {
-      background: rgba(219, 203, 146, 0.85);
+      background: linear-gradient(to bottom, #dbb05f, #ff4500); /* Orange gradient from coral to orange-red */
+      background-size: cover; /* Ensures the gradient covers the entire container */
+      background-position: center; /* Centers the background inside the container */
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       width: 300px;
+      height: 400px; /* You can adjust this based on your design */
       backdrop-filter: blur(5px);
     }
+
 
     h2 {
       text-align: center;
@@ -146,7 +150,7 @@
   <div id="toast" class="toast"></div>
 
   <div class="login-container">
-    <h2>ScholarCrypt Login</h2>
+    <h2>Scholarships application system</h2>
     
     <!-- Flask Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}

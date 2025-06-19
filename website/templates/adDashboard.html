@@ -14,7 +14,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -82,6 +82,53 @@
             text-align: center;
         }
 
+        .stat-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .shortlisted-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shortlisted-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .shortlisted-card:hover::before {
+            left: 100%;
+        }
+
+        .shortlisted-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(31, 38, 135, 0.5);
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .card-hover-text {
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            margin-top: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .shortlisted-card:hover .card-hover-text {
+            opacity: 1;
+        }
+
         .stat-number {
             font-size: 3rem;
             font-weight: bold;
@@ -102,12 +149,123 @@
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.18);
-            text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .coming-soon {
-            font-size: 3rem;
-            color: #ff6b6b;
+        .panel-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .panel-description {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Table Styles */
+        .applicants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .applicants-table th {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .applicants-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+
+        .applicants-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .applicants-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .applicant-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .score-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .score-excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .score-good {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .score-average {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .score-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .shortlist-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .shortlist-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .no-applicants {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .no-applicants-icon {
+            font-size: 4rem;
             margin-bottom: 1rem;
         }
 
@@ -171,6 +329,15 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
+
+            .applicants-table {
+                font-size: 0.85rem;
+            }
+
+            .applicants-table th,
+            .applicants-table td {
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -200,28 +367,101 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number">{{ total_applicants }}</div>
-                <div class="stat-label">Total Registered Users</div>
+                <div class="stat-label">Total Applications</div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-number">{{ total_applications }}</div>
-                <div class="stat-label">Applications Submitted</div>
-            </div>
+            <a href="{{ url_for('admin.view_shortlisted') }}" class="stat-card-link">
+                <div class="stat-card shortlisted-card">
+                    <div class="stat-number">{{ total_shortlisted }}</div>
+                    <div class="stat-label">Shortlisted Applicants</div>
+                    <div class="card-hover-text">Click to view details</div>
+                </div>
+            </a>
             
             <div class="stat-card">
-                <div class="stat-number">{{ total_shortlisted }}</div>
-                <div class="stat-label">Shortlisted Applicants</div>
+                <div class="stat-number">{{ total_applicants - total_shortlisted }}</div>
+                <div class="stat-label">Pending Review</div>
             </div>
         </div>
 
-        <!-- Admin Panel -->
+        <!-- Admin Management Panel -->
         <div class="admin-panel">
-            <div class="coming-soon">🔧</div>
-            <h2>Admin Management Panel</h2>
-            <p>Advanced administrative features are currently under development. 
-               This will include user management, application review, shortlisting tools, 
-               and comprehensive reporting capabilities.</p>
-            <p>Coming soon: Application review system, bulk operations, and detailed analytics.</p>
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span>📋</span>
+                    Application Review Panel
+                </h2>
+                <p class="panel-description">
+                    Review applications based on academic merit and criteria. Personal information is hidden to ensure unbiased evaluation.
+                </p>
+            </div>
+
+            {% if non_shortlisted_applicants %}
+                <table class="applicants-table">
+                    <thead>
+                        <tr>
+                            <th>Applicant ID</th>
+                            <th>Academic Score</th>
+                            <th>Merit Points</th>
+                            <th>Household Income (RM)</th>
+                            <th>Siblings</th>
+                            <th>Program</th>
+                            <th>Disability Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for criteria in non_shortlisted_applicants %}
+                        <tr>
+                            <td>
+                                <span class="applicant-id">#{{ criteria.applicant_id }}</span>
+                            </td>
+                            <td>
+                                <span class="score-badge 
+                                    {% if criteria.academic_score >= 3.5 %}score-excellent
+                                    {% elif criteria.academic_score >= 3.0 %}score-good
+                                    {% elif criteria.academic_score >= 2.5 %}score-average
+                                    {% else %}score-poor{% endif %}">
+                                    {{ criteria.academic_score }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="score-badge 
+                                    {% if criteria.merit_points >= 8.0 %}score-excellent
+                                    {% elif criteria.merit_points >= 6.0 %}score-good
+                                    {% elif criteria.merit_points >= 4.0 %}score-average
+                                    {% else %}score-poor{% endif %}">
+                                    {{ criteria.merit_points }}
+                                </span>
+                            </td>
+                            <td>RM {{ criteria.household_income }}</td>
+                            <td>{{ criteria.num_siblings }}</td>
+                            <td>{{ criteria.applied_program }}</td>
+                            <td>
+                                {% if criteria.disability_status %}
+                                    <span style="color: #17a2b8;">✓ Yes</span>
+                                {% else %}
+                                    <span style="color: #6c757d;">✗ No</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form action="{{ url_for('admin.shortlist_applicant', applicant_id=criteria.applicant.id) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="shortlist-btn" onclick="return confirm('Are you sure you want to shortlist this applicant?')">
+                                        ⭐ Shortlist
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-applicants">
+                    <div class="no-applicants-icon">📭</div>
+                    <h3>No Applications Pending Review</h3>
+                    <p>All submitted applications have been reviewed and shortlisted, or there are no applications yet.</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 
